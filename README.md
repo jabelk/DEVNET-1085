@@ -6,8 +6,6 @@ https://blogs.cisco.com/developer/nsoplayground01
 Playground local install:
 https://developer.cisco.com/codeexchange/github/repo/CiscoDevNet/NSO-Playground-Local-Install/
 
-System install
-https://developer.cisco.com/codeexchange/github/repo/CiscoDevNet/NSO-Playground-System-Install/
 
 Session Type
 DevNet
@@ -34,20 +32,10 @@ Cultivate a Learning Mindset: Discover how exploring YANG within the NSO environ
 
 ## NSO YANG Courses
 
-https://github.com/CiscoDevNet/nso-lab-files
 https://developer.cisco.com/learning/labs/yang-nso-101/
 https://developer.cisco.com/learning/tracks/get_started_with_nso/nso-yang/yang-nso-201/creating-a-new-model/
 
-### Cloud dev
-https://developer.cisco.com/devenv/?id=devenv-base-vscode-nso-local&GITHUB_SOURCE_REPO=https://github.com/CiscoDevNet/NSO-Playground-Local-Install
-
-https://developer.cisco.com/devenv/?id=devenv-base-vscode-nso-local&GITHUB_SOURCE_REPO=https://github.com/jabelk/learn-yang-playground
-
-https://developer.cisco.com/devenv/?id=devenv-base-vscode-nso-local&GITHUB_SOURCE_REPO=https://github.com/CiscoDevNet/NSO-Playground-Local-Install
-
-Jesus example:
-https://github.com/jillesca/nso-restconf-dns-example
-
+## Steps for this lab
 
 steps:
 
@@ -55,20 +43,34 @@ steps:
 source $NCS_DIR/ncsrc
 ncs-setup --dest ~/nso-instance 
 ```
-copy over files to ~/nso-instance/packages through VS Code GUI drag and drop
+
+Move over the packages using git clone to the home directory and then soft link them to packages directory:
 
 ```
-cd ~/nso-instance 
+git clone https://github.com/jabelk/DEVNET-1085
+
+# Navigate to the packages directory and ensure it's clean
+cd ~/nso-instance/packages
+
+# Move the directories from DEVNET-1085 to the packages directory
+mv ~/DEVNET-1085/learn-yang ~/nso-instance/packages/
+mv ~/DEVNET-1085/router-model ~/nso-instance/packages/
+
+```
+
+re-compile the packages 
+
+```
+cd ~/nso-instance/packages/learn-yang/src
+make clean all
+cd ~/nso-instance/packages/router-model/src
+make clean all
+```
+
+
+```
+cd ~/nso-instance
 ncs
-
-```
-
-```
-source $NCS_DIR/ncsrc
-cd ~/nso-insance/packages/learn-yang/src
-make clean all
-cd ~/nso-insance/packages/router-model/src
-make clean all
 ncs_cli -C -u admin
 packages reload force
 
@@ -77,17 +79,21 @@ packages reload force
 
 ```
 echo $DEVENV_APP_8080_URL
-
+# put that link in your browser
+# default credentials for the Web UI are: admin/admin
 ```
 
-default credentials are: admin/admin
-
+Configuring NSO CLI example
+```
 source $NCS_DIR/ncsrc
 ncs_cli -C -u admin
 show running-config router
 show running-config router | display json
 show running-config router | display xml
+```
 
+output example
+```
 admin@ncs# conf
 Entering configuration mode terminal
 admin@ncs(config)# router ?
@@ -105,6 +111,9 @@ router name        sjc-gw2
 router address     10.20.30.40
 router operational-status up
 admin@ncs#
+```
+
+changing configuration that is already existing example
 
 ```
 conf
