@@ -49,7 +49,6 @@ Move over the packages using git clone to the home directory and then soft link 
 ```
 git clone https://github.com/jabelk/DEVNET-1085
 
-# Navigate to the packages directory and ensure it's clean
 cd ~/nso-instance/packages
 
 # Move the directories from DEVNET-1085 to the packages directory
@@ -72,8 +71,12 @@ make clean all
 cd ~/nso-instance
 ncs
 ncs_cli -C -u admin
-packages reload force
+```
 
+
+```
+packages reload force
+exit
 ```
 
 
